@@ -1,0 +1,8 @@
+opencv-python
+pyserial
+numpy
+mysql-connector-python
+ttkbootstrap
+ultralytics
+Pillow
+matplotlib
