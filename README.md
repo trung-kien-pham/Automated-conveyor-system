@@ -70,13 +70,43 @@ Hệ thống cũng hỗ trợ **thực nghiệm** để khảo sát ảnh hưở
 
 ## 4. Kết quả
 
-![Kết quả nhận diện của YOLO](images/YOLO_results.png)
+<p align="center">
+  <img src="images/YOLO_results.png" width="600">
+</p>
 
-![Overcount rate (%) ở mỗi cấu hình tham số](images/Overcount_rate.png)
+<p align="center">
+  <em>Hình 1. Kết quả nhận diện của YOLO</em>
+</p>
 
-![F1-score với mỗi cấu hình tham số được chọn.](images/F1-score_table.png)
+<p align="center">
+  <img src="images/Overcount_rate.png" width="600">
+</p>
 
-![Biểu đồ F1-score theo từng mức điện áp đầu vào.](images/F1-score_Compare.png)
+<p align="center">
+  <em>Hình 2. Overcount rate (%) ở mỗi cấu hình tham số</em>
+</p>
+
+Sử dụng tỷ lệ đếm dư (overcount rate) để đánh giá độ ổn định của hệ thống trong bài toán đếm sản phẩm trên băng truyền. Chỉ số này phản ánh mức chênh lệch giữa số sản phẩm hệ thống ghi nhận và số sản phẩm thực tế, được tính theo công thức
+
+Overcount rate = (N_count​−40​)/40
+
+Trong đó, 𝑁_count là số sản phẩm được hệ thống ghi nhận. Các cấu hình có tỷ lệ đếm dư vượt quá 10% sẽ bị loại bỏ nhằm đảm bảo độ tin cậy và khả năng ứng dụng của hệ thống trong điều kiện vận hành thực tế.
+
+<p align="center">
+  <img src="images/F1-score_table.png" width="600">
+</p>
+
+<p align="center">
+  <em>Hình 3. F1-score với mỗi cấu hình tham số được chọn</em>
+</p>
+
+<p align="center">
+  <img src="images/F1-score_Compare.png" width="600">
+</p>
+
+<p align="center">
+  <em>Hình 4. Biểu đồ F1-score theo từng mức điện áp đầu vào</em>
+</p>
 
 Dựa trên kết quả phân tích, bộ tham số đầu vào tối ưu được lựa chọn là (3.3V+gear & 80 pixel), bộ tham số này thỏa mãn đồng thời hai tiêu chí (1) tỷ lệ đếm dư nằm dưới ngưỡng cho phép và (2) đạt giá trị F1-score cao nhất hoặc tiệm cận cao nhất trong các cấu hình được khảo sát.
 
