@@ -42,7 +42,7 @@ Hệ thống cũng hỗ trợ **thực nghiệm** để khảo sát ảnh hưở
 
 - Camera quan sát vùng băng truyền
 - Băng truyền + motor (nhiều mức tốc độ)
-- Vi điều khiển (ATmega16) - cần có Atmel studio và tải file servo_test_barebone.rar để nạp code atmega:
+- Vi điều khiển (ATmega16) - cần có `Atmel studio` và tải file `servo_test_barebone.rar` để nạp code atmega:
   - Nhận lệnh từ PC qua UART
   - Điều khiển servo/bộ gạt và băng truyền
 - PC chạy Python (xử lý, giao diện, DB)
@@ -64,9 +64,23 @@ Hệ thống cũng hỗ trợ **thực nghiệm** để khảo sát ảnh hưở
 - **ConveyorApp (Tkinter)**:
   - Giao diện 3 tab, cập nhật frame camera, counters và biểu đồ
 
+![Lưu đồ thuật toán](images/flowchart.png)
+
 ---
 
-## 4. Yêu cầu & cài đặt
+## 4. Kết quả
+
+![Kết quả nhận diện của YOLO](images/YOLO_results.png)
+
+![Overcount rate (%) ở mỗi cấu hình tham số](images/Overcount_rate.png)
+
+![F1-score với mỗi cấu hình tham số được chọn.](images/F1-score_table.png)
+
+![Biểu đồ F1-score theo từng mức điện áp đầu vào.](images/F1-score_Compare.png)
+
+Dựa trên kết quả phân tích, bộ tham số đầu vào tối ưu được lựa chọn là (3.3V+gear & 80 pixel), bộ tham số này thỏa mãn đồng thời hai tiêu chí (1) tỷ lệ đếm dư nằm dưới ngưỡng cho phép và (2) đạt giá trị F1-score cao nhất hoặc tiệm cận cao nhất trong các cấu hình được khảo sát.
+
+## 5. Yêu cầu & cài đặt
 
 ### Yêu cầu
 
@@ -89,4 +103,4 @@ git clone <link-repo>
 cd <folder-project>
 python -m venv venv
 venv\Scripts\activate
-pip install -r requirements.txt   # nếu có
+pip install -r requirements.txt
