@@ -46,7 +46,8 @@ Hệ thống cũng hỗ trợ **thực nghiệm** để khảo sát ảnh hưở
   - Nhận lệnh từ PC qua UART
   - Điều khiển servo/bộ gạt và băng truyền
 - PC chạy Python (xử lý, giao diện, DB)
-
+- Mạch PCB điều khiển cơ cấu chấp hành gồm động cơ, server qua ATmega16 và UART được thiết kế bằng Altium.
+![image alt](https://github.com/trung-kien-pham/Automated-conveyor-system/blob/04f373562ff2c0ed1081fe05c71ebacb75fd8c87/images/3D_Preview.png)
 ### Phần mềm
 
 - **YOLOProcessor**:  
