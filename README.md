@@ -283,7 +283,7 @@ Based on the analysis results, the optimal input parameter configuration was sel
 
 ### Requirements
 
-- Python 3.10+ (Windows 10/11)
+- Python 3.10+
 - MySQL Server (for example, version 8.0)
 - Main libraries:
   - `opencv-python`
