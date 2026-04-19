@@ -1,4 +1,4 @@
-# Hệ thống băng truyền kiểm tra hộp carton
+<!-- # Hệ thống băng truyền kiểm tra hộp carton
 
 ## 1. Giới thiệu
 
@@ -132,6 +132,174 @@ Dựa trên kết quả phân tích, bộ tham số đầu vào tối ưu đư�
 ```bash
 git clone <link-repo>
 cd <folder-project>
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt -->
+
+
+# Carton Box Inspection Conveyor System
+
+## 1. Introduction
+
+This system uses a **camera + YOLO** to inspect carton boxes on a conveyor belt and classify them into two categories:
+
+- `valid` – accepted product  
+- `invalid` – defective product (to be rejected)
+
+The system can:
+
+- Log inspection results to **MySQL**
+- Display information through a **Tkinter + ttkbootstrap** interface
+- Control a **servo/pusher mechanism** via a microcontroller (**ATmega16**) to remove defective boxes from the conveyor belt
+
+The system also supports **experimental evaluation** to analyze the effects of:
+
+- Conveyor speed
+- Tracking parameters: `MAX_DISTANCE`, `MAX_DISAPPEARED`
+
+on the overall system accuracy.
+
+---
+
+## 2. Main Features
+
+- Real-time detection using YOLO (`valid` / `invalid`)
+- Object tracking over time using `track_id`
+- Automatic rejection of defective boxes using a servo/pusher
+- Logging to MySQL:
+  - Table: `errors(id, error_type, timestamp)`
+- A 3-tab graphical user interface:
+  - **Monitor**: camera view, counters, logs, Start/Stop buttons
+  - **Database**: view logs by day/month/year/custom range, export CSV
+  - **Statistics**: visualize box counts over time using charts
+
+---
+
+## 3. System Architecture
+
+### Hardware
+
+- Camera monitoring the conveyor area
+- Conveyor belt + motor with multiple speed levels
+- Microcontroller (**ATmega16**)
+  - Receives commands from the PC via UART
+  - Controls the servo/pusher and conveyor operation
+  - Requires **Atmel Studio** and the file `servo_test_barebone.rar` to program the ATmega16
+- PC running Python for image processing, GUI, and database operations
+- A PCB for actuator control, including the motor and servo driven by the ATmega16 via UART, designed in **Altium**
+
+![3D PCB Preview](https://github.com/trung-kien-pham/Automated-conveyor-system/blob/04f373562ff2c0ed1081fe05c71ebacb75fd8c87/images/3D_Preview.png)
+
+### Software
+
+- **YOLOProcessor**
+  - Opens the camera
+  - Runs YOLO inference
+  - Produces bounding boxes and class labels
+  - Uses `SimpleCentroidTracker` for tracking
+
+- **SimpleCentroidTracker**
+  - Main parameters:
+    - `MAX_DISTANCE`: threshold for associating a new detection with an existing track
+    - `MAX_DISAPPEARED`: maximum number of frames an object can disappear before being removed
+
+- **ActuatorController**
+  - Receives defective box events
+  - Waits until the box reaches the rejection position
+  - Triggers the servo/pusher
+
+- **DatabaseManager**
+  - Automatically creates the database `conveyor_db` and the table `errors`
+  - Provides functions such as `log_error(...)`, `fetch_errors_*`, and `get_today_counters()`
+
+- **ConveyorApp (Tkinter)**
+  - Provides a 3-tab interface
+  - Updates the live camera feed, counters, and statistical charts
+
+<!-- ![System Flowchart](images/flowchart.png) -->
+
+<p align="center">
+  <img src="images/flowchart.png" alt="System Flowchart" width="600">
+</p>
+
+<p align="center">
+  <em>System Flowchart</em>
+</p>
+
+---
+
+## 4. Results
+
+<p align="center">
+  <img src="images/YOLO_results.png" width="600">
+</p>
+
+<p align="center">
+  <em>Figure 1. YOLO detection results</em>
+</p>
+
+<p align="center">
+  <img src="images/Overcount_rate.png" width="600">
+</p>
+
+<p align="center">
+  <em>Figure 2. Overcount rate (%) for each parameter configuration</em>
+</p>
+
+The **overcount rate** was used to evaluate the stability of the system in the conveyor-based product counting task. This metric reflects the difference between the number of products counted by the system and the actual number of products, and is defined as:
+
+\[
+\text{Overcount rate} = \frac{N_{count} - 40}{40}
+\]
+
+where \(N_{count}\) is the number of products counted by the system.
+
+Configurations with an overcount rate greater than **10%** were excluded to ensure the reliability and practical applicability of the system under real operating conditions.
+
+<p align="center">
+  <img src="images/F1-score_table.png" width="600">
+</p>
+
+<p align="center">
+  <em>Figure 3. F1-score for each selected parameter configuration</em>
+</p>
+
+<p align="center">
+  <img src="images/F1-score_Compare.png" width="600">
+</p>
+
+<p align="center">
+  <em>Figure 4. F1-score comparison across input voltage levels</em>
+</p>
+
+Based on the analysis results, the optimal input parameter configuration was selected as **(3.3V + gear & 80 pixels)**. This configuration satisfies both criteria:
+
+1. The overcount rate remains below the acceptable threshold  
+2. The F1-score is the highest, or close to the highest, among the tested configurations
+
+---
+
+## 5. Requirements and Installation
+
+### Requirements
+
+- Python 3.10+ (Windows 10/11)
+- MySQL Server (for example, version 8.0)
+- Main libraries:
+  - `opencv-python`
+  - `ultralytics`
+  - `ttkbootstrap`
+  - `mysql-connector-python`
+  - `Pillow`
+  - `matplotlib`
+  - `numpy`
+  - `pyserial`
+
+### Installation
+
+```bash
+git clone <repository-link>
+cd <project-folder>
 python -m venv venv
 venv\Scripts\activate
 pip install -r requirements.txt
